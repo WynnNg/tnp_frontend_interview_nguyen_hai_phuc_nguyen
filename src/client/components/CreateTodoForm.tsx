@@ -1,3 +1,5 @@
+import type { KeyboardEvent } from 'react'
+
 import { useState } from 'react'
 
 import { api } from '@/utils/client/api'
@@ -28,12 +30,28 @@ export const CreateTodoForm = () => {
 
   const apiContext = api.useContext()
 
+  // handle apis
   const { mutate: createTodo, isLoading: isCreatingTodo } =
     api.todo.create.useMutation({
       onSuccess: () => {
         apiContext.todo.getAll.refetch()
       },
     })
+
+  // handle actions
+  const handleClick = () => {
+    createTodo({
+      body: todoBody,
+    })
+    setTodoBody('')
+  }
+
+  const handlePressKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleClick()
+      e.preventDefault()
+    }
+  }
 
   return (
     <form className="group flex items-center justify-between rounded-12 border border-gray-200 py-2 pr-4 focus-within:border-gray-400">
@@ -46,6 +64,7 @@ export const CreateTodoForm = () => {
         type="text"
         placeholder="Add todo"
         value={todoBody}
+        onKeyDown={(e) => handlePressKeyDown(e)}
         onChange={(e) => {
           setTodoBody(e.target.value)
         }}
@@ -54,13 +73,9 @@ export const CreateTodoForm = () => {
 
       <button
         type="button"
+        className="mb-2 me-2 rounded-full bg-slate-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300"
         disabled={isCreatingTodo}
-        onClick={() => {
-          createTodo({
-            body: todoBody,
-          })
-          setTodoBody('')
-        }}
+        onClick={handleClick}
       >
         Add
       </button>

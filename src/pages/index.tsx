@@ -1,5 +1,5 @@
-import { CreateTodoForm } from '@/client/components/CreateTodoForm'
-import { TodoList } from '@/client/components/TodoList'
+import { CreateTodoForm } from '@/client/components/CreateTodoForm';
+import { TabFilter } from '@/client/components/TabFilter';
 
 /**
  * QUESTION 6:
@@ -23,11 +23,9 @@ const Index = () => {
         <h1 className="text-center text-4xl font-extrabold text-gray-900">
           Todo App
         </h1>
-
         <div className="pt-10">
-          <TodoList />
+          <TabFilter />
         </div>
-
         <div className="pt-10">
           <CreateTodoForm />
         </div>
